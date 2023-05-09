@@ -1,8 +1,8 @@
-import "./App.module.css";
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Container, Row, Button } from "react-bootstrap";
 import mainImg from "./img/sea.avif";
-import { useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import data from "./data.js";
 import ShoesDetail from "./routes/detail.js";
 import ShoesFnc from "./routes/main.js";
@@ -11,13 +11,18 @@ import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+export let Context1 = createContext(); // Context API
+
 function App() {
+  let navigate = useNavigate(); // url routes
+  
   let [shoes, setShoes] = useState(data); // shoes data
   let [clickCount, setClickCount] = useState(1); // click count
   let [showBtn, setShowBtn] = useState("block"); // btn show
   let [loadingAlert, setLoadingAlert] = useState("none"); // loading text
   let [doneAlert, setDoneAlert] = useState("none"); // done text
-  let navigate = useNavigate(); // url routes
+  
+  let [inventory] = useState([10, 11, 12]);
 
   return (
     <div className="App">
@@ -86,7 +91,7 @@ function App() {
                           setLoadingAlert((loadingAlert = "none"));
                           setDoneAlert((doneAlert = "block"));
                           setShowBtn("none");
-                          let set = setTimeout(() => {
+                          setTimeout(() => {
                             setDoneAlert((doneAlert = "none"));
                           }, 1000);
                         }
@@ -113,7 +118,9 @@ function App() {
           path="/detail/:id"
           element={
             <>
+            <Context1.Provider value={{inventory, shoes}}>
               <ShoesDetail detailShoes={shoes}></ShoesDetail>
+              </Context1.Provider>
             </>
           }
         />

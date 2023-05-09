@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
+import { Context1 } from './../App.js';
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -13,10 +14,13 @@ const ShoesDetail = (props) => {
   let [showAlert, setShowAlert] = useState("block");
   let [quantity, setQuantity] = useState(0);
   let [tabChange, setTabChange] = useState(0);
+  let [enterDetail, setEnterDetail] = useState("");
+
+  // let {inventory, shoes} = useContext(Context1)
 
   useEffect(() => {
     let set = setTimeout(() => {
-      setShowAlert((showAlert = "none"));
+      setShowAlert(("none"));
     }, 2000);
     return () => {
       clearTimeout(set);
@@ -29,14 +33,21 @@ const ShoesDetail = (props) => {
     }
   }, [quantity]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setEnterDetail("end")
+    }, 100)
+  }, []);
+
   const params = useParams().id;
-  return (
-    <div className="container">
+  return(
+    <div className={"container start " + enterDetail}>
       <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />
       <br />
       <div className="alert alert-warning" style={{ display: showAlert }}>
         2초이내 구매시 할인 !
       </div>
+      <div className="start">aaaaa</div>
       <div className="row">
         <div className="col-md-6">
           <img
@@ -92,28 +103,29 @@ const ShoesDetail = (props) => {
         </Nav.Item>
       </Nav>
 
-      <TabContent tabChange={tabChange} />
+      <TabContent tabChange={tabChange} shoestest={props.detailShoes}/>
     </div>
   );
 };
 
-const TabContent = ({ tabChange }) => {
+let TabContent = ({ tabChange, shoestest }) => {
+  // let {inventory, shoes} = useContext(Context1) // TODO :: Context API 정리, memo upload
   let [fade, setFade] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
-      setFade("end");
-    }, 100);
+      setFade("end")
+    }, 100)
     return () => {
-      setFade("");
-    };
+      setFade("")
+    }
   }, [tabChange]);
 
   return (
     <div className={"start " + fade}>
-      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tabChange]}
+      {[<div>{shoestest[0].title}</div>, <div>내용1</div>, <div>내용2</div>][tabChange]}
     </div>
   );
 };
 
-export default { ShoesDetail, TabContent };
+export default ShoesDetail;
