@@ -10,6 +10,7 @@ let Div = styled.div`
 
 const ShoesDetail = (props) => {
   // hook :: mount/update, html 렌더링 이후 동작
+
   let [count, setCount] = useState(0);
   let [showAlert, setShowAlert] = useState("block");
   let [quantity, setQuantity] = useState(0);
