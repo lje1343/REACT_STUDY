@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { Nav } from "react-bootstrap";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -9,11 +10,9 @@ let Div = styled.div`
 `;
 
 const ShoesDetail = (props) => {
-  // hook :: mount/update, html 렌더링 이후 동작
-
-  let [count, setCount] = useState(0);
   let [showAlert, setShowAlert] = useState("block");
   let [quantity, setQuantity] = useState(0);
+  let [tabChange, setTabChange] = useState(0);
 
   useEffect(() => {
     let set = setTimeout(() => {
@@ -34,17 +33,10 @@ const ShoesDetail = (props) => {
   return (
     <div className="container">
       <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />
+      <br />
       <div className="alert alert-warning" style={{ display: showAlert }}>
         2초이내 구매시 할인 !
       </div>
-      {count}
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        button
-      </button>
       <div className="row">
         <div className="col-md-6">
           <img
@@ -66,8 +58,62 @@ const ShoesDetail = (props) => {
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
+      <br />
+      <Nav variant="tabs" defaultActiveKey="link0">
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link0"
+            onClick={() => {
+              setTabChange(0);
+            }}
+          >
+            버튼0
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link1"
+            onClick={() => {
+              setTabChange(1);
+            }}
+          >
+            버튼1
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link2"
+            onClick={() => {
+              setTabChange(2);
+            }}
+          >
+            버튼2
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+
+      <TabContent tabChange={tabChange} />
     </div>
   );
 };
 
-export default ShoesDetail;
+const TabContent = ({ tabChange }) => {
+  let [fade, setFade] = useState("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFade("end");
+    }, 100);
+    return () => {
+      setFade("");
+    };
+  }, [tabChange]);
+
+  return (
+    <div className={"start " + fade}>
+      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tabChange]}
+    </div>
+  );
+};
+
+export default { ShoesDetail, TabContent };

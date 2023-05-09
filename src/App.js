@@ -1,45 +1,23 @@
 import "./App.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Container, Row } from "react-bootstrap";
+import { Navbar, Nav, Container, Row, Button } from "react-bootstrap";
 import mainImg from "./img/sea.avif";
 import { useEffect, useState } from "react";
 import data from "./data.js";
 import ShoesDetail from "./routes/detail.js";
 import ShoesFnc from "./routes/main.js";
 import { Event, EventDetail } from "./routes/event.js";
-import React from "react"; // 개인 노트북 문제
+import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function App() {
-  let [shoes, setShoes] = useState(data);
-  let [clickCount, setClickCount] = useState(1);
-  let [showBtn, setShowBtn] = useState("block");
-  let [loadingAlert, setLoadingAlert] = useState("none");
-  let [doneAlert, setDoneAlert] = useState("none");
-  let navigate = useNavigate();
-
-    useEffect(() => {
-      setLoadingAlert((loadingAlert = "block"));
-    let set = setTimeout(() => {
-      setLoadingAlert((loadingAlert = "none"));
-    }, 1000); 
-    return () => {
-      clearTimeout(set);
-    };
-  }, [clickCount]);
-
-  // TODO :: 응용3번 아직 더 다듬어야한다 (성공/실패이후로 조건 바꿔야함)
-
-      useEffect(() => {
-        setDoneAlert((doneAlert = "block"));
-    let set = setTimeout(() => {
-      setDoneAlert((doneAlert = "none"));
-    }, 1000); 
-    return () => {
-      clearTimeout(set);
-    };
-  }, [showBtn]);
+  let [shoes, setShoes] = useState(data); // shoes data
+  let [clickCount, setClickCount] = useState(1); // click count
+  let [showBtn, setShowBtn] = useState("block"); // btn show
+  let [loadingAlert, setLoadingAlert] = useState("none"); // loading text
+  let [doneAlert, setDoneAlert] = useState("none"); // done text
+  let navigate = useNavigate(); // url routes
 
   return (
     <div className="App">
@@ -91,24 +69,41 @@ function App() {
                     })}
                   </Row>
                 </div>
-                <button onClick={() => {
-                    axios.get('https://codingapple1.github.io/shop/data3.json')
-                    .then((result) => {
-                      if(clickCount !== 2){
-                        console.log(result.data)
-                        let temp = [...shoes, ...result.data]
-                        setShoes(temp)
-                        setClickCount(clickCount + 1);
-                      }else{
-                        setShowBtn("none")
-                      }
-                    })
-                    .catch(() => {
-                      console.log('데이터 요청 실패')
-                    })
-                }} style={{ display: showBtn }}>+ 더보기 {clickCount}번째</button>
-              <div style={{ display: loadingAlert }}>로딩중입니다.....</div>
-              <div style={{ display: doneAlert }}>더이상 준비된 상품이 없습니다.</div>
+                <Button
+                  variant="outline-primary"
+                  onClick={() => {
+                    setLoadingAlert((loadingAlert = "block"));
+                    axios
+                      .get("https://codingapple1.github.io/shop/data3.json")
+                      .then((result) => {
+                        if (clickCount !== 2) {
+                          setLoadingAlert((loadingAlert = "none"));
+                          console.log(result.data);
+                          let temp = [...shoes, ...result.data];
+                          setShoes(temp);
+                          setClickCount(clickCount + 1);
+                        } else {
+                          setLoadingAlert((loadingAlert = "none"));
+                          setDoneAlert((doneAlert = "block"));
+                          setShowBtn("none");
+                          let set = setTimeout(() => {
+                            setDoneAlert((doneAlert = "none"));
+                          }, 1000);
+                        }
+                      })
+                      .catch(() => {
+                        setLoadingAlert((loadingAlert = "none"));
+                        console.log("데이터 요청 실패");
+                      });
+                  }}
+                  style={{ display: showBtn }}
+                >
+                  + 더보기 {clickCount}번째
+                </Button>
+                <div style={{ display: loadingAlert }}>loading.....</div>
+                <div style={{ display: doneAlert }}>
+                  더이상 준비된 상품이 없습니다.
+                </div>
               </Container>
             </>
           }
