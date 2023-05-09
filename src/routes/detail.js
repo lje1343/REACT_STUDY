@@ -17,15 +17,15 @@ const ShoesDetail = (props) => {
   useEffect(() => {
     let set = setTimeout(() => {
       setShowAlert((showAlert = "none"));
-    }, 2000); 
+    }, 2000);
     return () => {
       clearTimeout(set);
     };
   });
 
   useEffect(() => {
-    if(isNaN(quantity)){
-      alert('숫자만 입력해주세요.')
+    if (isNaN(quantity)) {
+      alert("숫자만 입력해주세요.");
     }
   }, [quantity]);
 
@@ -52,7 +52,13 @@ const ShoesDetail = (props) => {
           />
         </div>
         <div className="col-md-6">
-          <input placeholder="수량을 입력해주세요." value={quantity} onChange={(e) => { setQuantity(e.target.value)}}></input>
+          <input
+            placeholder="수량을 입력해주세요."
+            value={quantity}
+            onChange={(e) => {
+              setQuantity(e.target.value);
+            }}
+          ></input>
           <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
           <p>{props.detailShoes[params - 1].content}</p>
           <p>{props.detailShoes[params - 1].price}원</p>
