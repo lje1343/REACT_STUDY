@@ -66,7 +66,8 @@ const ShoesDetail = (props) => {
           <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
           <p>{props.detailShoes[params - 1].content}</p>
           <p>{props.detailShoes[params - 1].price}원</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button className="btn btn-danger" onClick={() => {}}>주문하기</button>
+          {/* TODO :: 주문하기 클릭시 장바구니 담아주기 */}
         </div>
       </div>
       <br />
@@ -109,7 +110,7 @@ const ShoesDetail = (props) => {
 };
 
 let TabContent = ({ tabChange, shoestest }) => {
-  // let {inventory, shoes} = useContext(Context1) // TODO :: Context API 정리, memo upload
+  // let {inventory, shoes} = useContext(Context1)
   let [fade, setFade] = useState("");
 
   useEffect(() => {
@@ -122,6 +123,8 @@ let TabContent = ({ tabChange, shoestest }) => {
   }, [tabChange]);
 
   return (
+    <>
+    <br/>
     <div className={"start " + fade}>
       {
         [
@@ -131,6 +134,7 @@ let TabContent = ({ tabChange, shoestest }) => {
         ][tabChange]
       }
     </div>
+    </>
   );
 };
 
