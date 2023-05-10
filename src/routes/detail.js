@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
-import { Context1 } from './../App.js';
+// import { Context1 } from "../App.js";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -20,7 +20,7 @@ const ShoesDetail = (props) => {
 
   useEffect(() => {
     let set = setTimeout(() => {
-      setShowAlert(("none"));
+      setShowAlert("none");
     }, 2000);
     return () => {
       clearTimeout(set);
@@ -35,12 +35,12 @@ const ShoesDetail = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setEnterDetail("end")
-    }, 100)
+      setEnterDetail("end");
+    }, 100);
   }, []);
 
   const params = useParams().id;
-  return(
+  return (
     <div className={"container start " + enterDetail}>
       <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />
       <br />
@@ -78,7 +78,7 @@ const ShoesDetail = (props) => {
               setTabChange(0);
             }}
           >
-            버튼0
+            명칭
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
@@ -88,7 +88,7 @@ const ShoesDetail = (props) => {
               setTabChange(1);
             }}
           >
-            버튼1
+            설명
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
@@ -98,12 +98,12 @@ const ShoesDetail = (props) => {
               setTabChange(2);
             }}
           >
-            버튼2
+            가격
           </Nav.Link>
         </Nav.Item>
       </Nav>
 
-      <TabContent tabChange={tabChange} shoestest={props.detailShoes}/>
+      <TabContent tabChange={tabChange} shoestest={props.detailShoes} />
     </div>
   );
 };
@@ -114,16 +114,22 @@ let TabContent = ({ tabChange, shoestest }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setFade("end")
-    }, 100)
+      setFade("end");
+    }, 100);
     return () => {
-      setFade("")
-    }
+      setFade("");
+    };
   }, [tabChange]);
 
   return (
     <div className={"start " + fade}>
-      {[<div>{shoestest[0].title}</div>, <div>내용1</div>, <div>내용2</div>][tabChange]}
+      {
+        [
+          <div>{shoestest[0].title}</div>,
+          <div>{shoestest[0].content}</div>,
+          <div>{shoestest[0].price}</div>,
+        ][tabChange]
+      }
     </div>
   );
 };

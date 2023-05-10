@@ -4,9 +4,10 @@ import { Navbar, Nav, Container, Row, Button } from "react-bootstrap";
 import mainImg from "./img/sea.avif";
 import { createContext, useState } from "react";
 import data from "./data.js";
-import ShoesDetail from "./routes/detail.js";
-import ShoesFnc from "./routes/main.js";
-import { Event, EventDetail } from "./routes/event.js";
+import ShoesDetail from "./routes/Detail.js";
+import Cart from "./routes/Cart.js";
+import ShoesFnc from "./routes/Main.js";
+import { Event, EventDetail } from "./routes/Event.js";
 import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,13 +16,13 @@ export let Context1 = createContext(); // Context API
 
 function App() {
   let navigate = useNavigate(); // url routes
-  
+
   let [shoes, setShoes] = useState(data); // shoes data
   let [clickCount, setClickCount] = useState(1); // click count
   let [showBtn, setShowBtn] = useState("block"); // btn show
   let [loadingAlert, setLoadingAlert] = useState("none"); // loading text
   let [doneAlert, setDoneAlert] = useState("none"); // done text
-  
+
   let [inventory] = useState([10, 11, 12]);
 
   return (
@@ -52,12 +53,18 @@ function App() {
             >
               Detail
             </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              Cart
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
 
       <Routes>
-        {/* main */}
         <Route
           path="/"
           element={
@@ -113,19 +120,20 @@ function App() {
             </>
           }
         />
-        {/* detail */}
+
         <Route
           path="/detail/:id"
           element={
             <>
-            <Context1.Provider value={{inventory, shoes}}>
-              <ShoesDetail detailShoes={shoes}></ShoesDetail>
+              <Context1.Provider value={{ inventory, shoes }}>
+                <ShoesDetail detailShoes={shoes}></ShoesDetail>
               </Context1.Provider>
             </>
           }
         />
 
-        {/* event */}
+        <Route path="/cart" element={<Cart></Cart>}></Route>
+
         <Route path="/event" element={<Event></Event>}>
           <Route
             path="one"
