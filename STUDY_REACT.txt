@@ -78,6 +78,14 @@ state1이 변경될 때만 실행
 	fetch는 손수 해야함
 
 
-
+### 2단계 이상의 자식 컴포넌트에게 데이터를 보내주고 싶을 경우 ?
+1. Context API
+	export let Context1 = React.createContext();
+	useContext(Context1)
+	단점 :: state 변경시 쓸데없는 컴포넌트까지 전부 재렌더링 ===> 보통 redux 외부 라이브러리를 많이 사용함
+2.Redux
+	props 없이 state를 공유할 수 있게 도와주는 라이브러리
+	store.js 파일
+	index.js 파일가서 Provider 라는 컴포넌트와 store.js import 해야함 ===> <App>과 모든 자식들은 모두 state를 맘대로 꺼내쓸 수 있음
 
 
