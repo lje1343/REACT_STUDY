@@ -7,8 +7,8 @@ import data from "./data.js";
 import ShoesDetail from "./routes/Detail.js";
 import Cart from "./routes/Cart.js";
 import ShoesFnc from "./routes/Main.js";
-import Event from "./routes/Event.js";
-import EventDetail from "./routes/EventDetail.js";
+import Event from "./routes/event/Event.js";
+import EventDetail from "./routes/event/EventDetail.js";
 import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -27,7 +27,6 @@ function App() {
   let [show, setShow] = useState(true);
 
   const changeShow = (data) => {
-    console.log(data);
     setShow(data);
   };
 
