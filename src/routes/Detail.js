@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
 // import { Context1 } from "../App.js";
+import { useDispatch } from "react-redux";
+import { addShoes } from "./../store/saveCartSlice.js";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -18,6 +20,8 @@ const ShoesDetail = (props) => {
 
   // let {inventory, shoes} = useContext(Context1)
 
+  let dispath = useDispatch();
+  let navigate = useNavigate();
   useEffect(() => {
     let set = setTimeout(() => {
       setShowAlert("none");
@@ -66,8 +70,15 @@ const ShoesDetail = (props) => {
           <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
           <p>{props.detailShoes[params - 1].content}</p>
           <p>{props.detailShoes[params - 1].price}원</p>
-          <button className="btn btn-danger" onClick={() => {}}>주문하기</button>
-          {/* TODO :: 주문하기 클릭시 장바구니 담아주기 */}
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              dispath(addShoes({ data: props.detailShoes[params - 1] }));
+              navigate("/cart");
+            }}
+          >
+            주문하기
+          </button>
         </div>
       </div>
       <br />
@@ -124,16 +135,16 @@ let TabContent = ({ tabChange, shoestest }) => {
 
   return (
     <>
-    <br/>
-    <div className={"start " + fade}>
-      {
-        [
-          <div>{shoestest[0].title}</div>,
-          <div>{shoestest[0].content}</div>,
-          <div>{shoestest[0].price}</div>,
-        ][tabChange]
-      }
-    </div>
+      <br />
+      <div className={"start " + fade}>
+        {
+          [
+            <div>{shoestest[0].title}</div>,
+            <div>{shoestest[0].content}</div>,
+            <div>{shoestest[0].price}</div>,
+          ][tabChange]
+        }
+      </div>
     </>
   );
 };
