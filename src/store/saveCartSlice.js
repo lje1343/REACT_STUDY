@@ -38,8 +38,16 @@ let saveCart = createSlice({
         return state.concat(addObj);
       }
     },
+    deleteShoes(state, param) {
+      const idx = state.findIndex((obj) => obj.id === param.payload.data.id);
+      const deleteChk = window.confirm("삭제하시겠습니까?");
+      if (deleteChk) {
+        state.splice(idx, 1);
+        window.alert("삭제되었습니다.");
+      }
+    },
   },
 });
 
-export let { changeQuantityShoes, addShoes } = saveCart.actions;
+export let { changeQuantityShoes, addShoes, deleteShoes } = saveCart.actions;
 export { saveCart };
