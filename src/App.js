@@ -7,23 +7,29 @@ import data from "./data.js";
 import ShoesDetail from "./routes/Detail.js";
 import Cart from "./routes/Cart.js";
 import ShoesFnc from "./routes/Main.js";
-import { Event, EventDetail } from "./routes/Event.js";
+import Event from "./routes/Event.js";
+import EventDetail from "./routes/EventDetail.js";
 import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export let Context1 = createContext(); // Context API
+export let Context1 = createContext();
 
 function App() {
-  let navigate = useNavigate(); // url routes
+  let navigate = useNavigate();
 
-  let [shoes, setShoes] = useState(data); // shoes data
-  let [clickCount, setClickCount] = useState(1); // click count
-  let [showBtn, setShowBtn] = useState("block"); // btn show
-  let [loadingAlert, setLoadingAlert] = useState("none"); // loading text
-  let [doneAlert, setDoneAlert] = useState("none"); // done text
-
+  let [shoes, setShoes] = useState(data);
+  let [clickCount, setClickCount] = useState(1);
+  let [showBtn, setShowBtn] = useState("block");
+  let [loadingAlert, setLoadingAlert] = useState("none");
+  let [doneAlert, setDoneAlert] = useState("none");
   let [inventory] = useState([10, 11, 12]);
+  let [show, setShow] = useState(true);
+
+  const changeShow = (data) => {
+    console.log(data);
+    setShow(data);
+  };
 
   return (
     <div className="App">
@@ -41,24 +47,17 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link
               onClick={() => {
-                navigate("/");
-              }}
-            >
-              Home
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/detail/1");
-              }}
-            >
-              Detail
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
                 navigate("/cart");
               }}
             >
               Cart
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/event");
+              }}
+            >
+              Event
             </Nav.Link>
           </Nav>
         </Container>
@@ -110,7 +109,7 @@ function App() {
                   }}
                   style={{ display: showBtn }}
                 >
-                  + 더보기 {clickCount}번째
+                  + 더보기 ({clickCount})
                 </Button>
                 <div style={{ display: loadingAlert }}>loading.....</div>
                 <div style={{ display: doneAlert }}>
@@ -134,19 +133,30 @@ function App() {
 
         <Route path="/cart" element={<Cart></Cart>}></Route>
 
-        <Route path="/event" element={<Event></Event>}>
+        <Route path="/event" element={<Event changeShow={changeShow}></Event>}>
           <Route
             path="one"
-            element={<EventDetail params={"one"}></EventDetail>}
+            element={
+              <EventDetail
+                params={"one"}
+                show={show}
+                changeShow={changeShow}
+              ></EventDetail>
+            }
           />
           <Route
             path="two"
-            element={<EventDetail params={"two"}></EventDetail>}
+            element={
+              <EventDetail
+                params={"two"}
+                show={show}
+                changeShow={changeShow}
+              ></EventDetail>
+            }
           />
         </Route>
 
-        {/* 404 */}
-        <Route path="*" element={<div>404 :: 없는페이지입니다.</div>} />
+        <Route path="*" element={<div>404 error :: 잘못된 경로입니다.</div>} />
       </Routes>
     </div>
   );

@@ -1,21 +1,40 @@
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
+import styled from "styled-components";
 
-const Event = () => {
+let H5 = styled.div`
+  background: #ffff00;
+  padding: 10px;
+`;
+
+const Event = (props) => {
+  let navigate = useNavigate();
+
   return (
     <div>
-      <h4>오늘의 이벤트</h4>
+      <br />
+      <H5>오늘의 이벤트를 확인해보세요</H5>
+      <br />
+      <div
+        onClick={() => {
+          props.changeShow(true);
+          navigate("/event/one");
+        }}
+      >
+        ♡ 첫번째 이벤트 ♡
+      </div>
+      <div
+        onClick={() => {
+          props.changeShow(true);
+          navigate("/event/two");
+        }}
+      >
+        ♡ 두번째 이벤트 ♡
+      </div>
       <Outlet></Outlet>
     </div>
   );
 };
 
-const EventDetail = (props) => {
-  console.log(props.params);
-  return props.params === "one" ? (
-    <div>첫 주문시 양배추즙 서비스</div>
-  ) : (
-    <div>생일기념 쿠폰받기</div>
-  );
-};
-
-export { Event, EventDetail };
+export default Event;

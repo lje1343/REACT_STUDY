@@ -17,7 +17,6 @@ const ShoesDetail = (props) => {
   let [quantity, setQuantity] = useState(0);
   let [tabChange, setTabChange] = useState(0);
   let [enterDetail, setEnterDetail] = useState("");
-
   // let {inventory, shoes} = useContext(Context1)
 
   let dispath = useDispatch();
@@ -60,13 +59,13 @@ const ShoesDetail = (props) => {
           />
         </div>
         <div className="col-md-6">
-          <input
+          {/* <input
             placeholder="수량을 입력해주세요."
             value={quantity}
             onChange={(e) => {
               setQuantity(e.target.value);
             }}
-          ></input>
+          ></input> */}
           <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
           <p>{props.detailShoes[params - 1].content}</p>
           <p>{props.detailShoes[params - 1].price}원</p>
@@ -115,15 +114,17 @@ const ShoesDetail = (props) => {
         </Nav.Item>
       </Nav>
 
-      <TabContent tabChange={tabChange} shoestest={props.detailShoes} />
+      <TabContent
+        tabChange={tabChange}
+        detailShoes={props.detailShoes[[params - 1]]}
+      />
     </div>
   );
 };
 
-let TabContent = ({ tabChange, shoestest }) => {
+let TabContent = ({ tabChange, detailShoes }) => {
   // let {inventory, shoes} = useContext(Context1)
   let [fade, setFade] = useState("");
-
   useEffect(() => {
     setTimeout(() => {
       setFade("end");
@@ -139,9 +140,9 @@ let TabContent = ({ tabChange, shoestest }) => {
       <div className={"start " + fade}>
         {
           [
-            <div>{shoestest[0].title}</div>,
-            <div>{shoestest[0].content}</div>,
-            <div>{shoestest[0].price}</div>,
+            <div>{detailShoes.title}</div>,
+            <div>{detailShoes.content}</div>,
+            <div>{detailShoes.price}</div>,
           ][tabChange]
         }
       </div>

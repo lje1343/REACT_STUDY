@@ -2,7 +2,7 @@ import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { changeName, addAge } from "./../store/userSlice.js";
-import { changeQuantityShoes } from "./../store/saveCartSlice.js";
+import { changeQuantityShoes, deleteShoes } from "./../store/saveCartSlice.js";
 
 const Cart = () => {
   let store = useSelector((state) => {
@@ -13,17 +13,17 @@ const Cart = () => {
   return (
     <div>
       <br />
-      <div>
+      <h5>
         {store.user.name}님의 카트입니다. ({store.user.age}세)
-      </div>
-      <Button
+      </h5>
+      {/* <Button
         variant="outline-warning"
         onClick={() => {
           dispath(addAge(10));
         }}
       >
         +
-      </Button>
+      </Button> */}
       <br />
       <Table>
         <thead>
@@ -32,6 +32,7 @@ const Cart = () => {
             <th>상품명</th>
             <th>수량</th>
             <th>변경하기</th>
+            <th>삭제하기</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +58,16 @@ const Cart = () => {
                     }}
                   >
                     -
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      dispath(deleteShoes({ data: e }));
+                    }}
+                  >
+                    삭제하기
                   </Button>
                 </td>
               </tr>
