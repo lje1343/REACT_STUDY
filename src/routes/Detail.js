@@ -5,6 +5,7 @@ import { Nav } from "react-bootstrap";
 // import { Context1 } from "../App.js";
 import { useDispatch } from "react-redux";
 import { addShoes } from "./../store/saveCartSlice.js";
+import { changeViewdlist } from "./../store/recentlyViewedSlice.js";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -42,7 +43,12 @@ const ShoesDetail = (props) => {
     }, 100);
   }, []);
 
+  useEffect(() => {
+    dispath(changeViewdlist({ data: props.detailShoes[params - 1] }));
+  }, []);
+
   const params = useParams().id;
+
   return (
     <div className={"container start " + enterDetail}>
       <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />

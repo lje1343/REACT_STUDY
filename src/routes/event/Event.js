@@ -13,7 +13,7 @@ const Event = (props) => {
   return (
     <div>
       <br />
-      <H5>오늘의 이벤트를 확인해보세요</H5>
+      <H5>오늘의 이벤트를 확인해보세요 🎁</H5>
       <br />
       <div
         onClick={() => {
@@ -21,7 +21,7 @@ const Event = (props) => {
           navigate("/event/one");
         }}
       >
-        ♡ 첫번째 이벤트 ♡
+        ✨ 첫번째 이벤트 ✨
       </div>
       <div
         onClick={() => {
@@ -29,7 +29,7 @@ const Event = (props) => {
           navigate("/event/two");
         }}
       >
-        ♡ 두번째 이벤트 ♡
+        ✨ 두번째 이벤트 ✨
       </div>
       <Outlet></Outlet>
     </div>
