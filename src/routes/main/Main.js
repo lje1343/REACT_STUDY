@@ -15,12 +15,9 @@ const ShoesFnc = (props) => {
         />
       </Link>
       <h4>{props.shoes.title}</h4>
-      {/* <p>{props.shoes.content}</p> */}
       <p>{props.shoes.price}</p>
     </Col>
   );
 };
 
 export default ShoesFnc;
-
-

@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
 import styled from "styled-components";
 
 let H5 = styled.div`

@@ -1,17 +1,18 @@
+import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Container, Row, Button } from "react-bootstrap";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import axios from "axios";
 import mainImg from "./img/sea.avif";
 import { createContext, useState } from "react";
 import data from "./data.js";
 import ShoesDetail from "./routes/Detail.js";
 import Cart from "./routes/Cart.js";
-import ShoesFnc from "./routes/Main.js";
+import ShoesFnc from "./routes/main/Main.js";
 import Event from "./routes/event/Event.js";
 import EventDetail from "./routes/event/EventDetail.js";
-import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import axios from "axios";
+import RecentlyViewed from "./routes/main/RecentlyViewed";
 
 export let Context1 = createContext();
 
@@ -68,9 +69,13 @@ function App() {
           element={
             <>
               <div
-                className="main-bg"
-                style={{ backgroundImage: "url(" + mainImg + ")" }}
-              ></div>
+                className="main-bg mainParent"
+                style={{
+                  backgroundImage: "url(" + mainImg + ")",
+                }}
+              >
+                <RecentlyViewed className="mainChild"></RecentlyViewed>
+              </div>
               <Container>
                 <div>
                   <Row>
@@ -84,13 +89,17 @@ function App() {
                   onClick={() => {
                     setLoadingAlert((loadingAlert = "block"));
                     axios
-                      .get("https://codingapple1.github.io/shop/data3.json")
+                      .get(
+                        "https://codingapple1.github.io/shop/data" +
+                          Number(clickCount + 1) +
+                          ".json"
+                      )
                       .then((result) => {
+                        let temp = [...shoes, ...result.data];
+                        setShoes(temp);
+
                         if (clickCount !== 2) {
                           setLoadingAlert((loadingAlert = "none"));
-                          console.log(result.data);
-                          let temp = [...shoes, ...result.data];
-                          setShoes(temp);
                           setClickCount(clickCount + 1);
                         } else {
                           setLoadingAlert((loadingAlert = "none"));
