@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { changeName, addAge } from "./../store/userSlice.js";
 import { changeQuantityShoes, deleteShoes } from "./../store/saveCartSlice.js";
+import RecentlyViewed from "./main/RecentlyViewed.js";
 
 const Cart = () => {
   let store = useSelector((state) => {
@@ -12,6 +13,7 @@ const Cart = () => {
 
   return (
     <div>
+      <RecentlyViewed className="mainChild"></RecentlyViewed>
       <br />
       <h5>
         {store.user.name}님의 카트입니다. ({store.user.age}세)
