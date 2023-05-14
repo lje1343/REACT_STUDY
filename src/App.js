@@ -13,6 +13,9 @@ import ShoesFnc from "./routes/main/Main.js";
 import Event from "./routes/event/Event.js";
 import EventDetail from "./routes/event/EventDetail.js";
 import RecentlyViewed from "./routes/main/RecentlyViewed";
+import Error from "./routes/Error";
+import Login from "./routes/user/Login";
+import Join from "./routes/user/Join";
 
 export let Context1 = createContext();
 
@@ -72,6 +75,14 @@ function App() {
               }}
             >
               Event
+            </Nav.Link>
+            {/* 임시 */}
+            <Nav.Link
+              onClick={() => {
+                navigate("/join");
+              }}
+            >
+              Join
             </Nav.Link>
           </Nav>
         </Container>
@@ -181,7 +192,11 @@ function App() {
           />
         </Route>
 
-        <Route path="*" element={<div>404 error :: 잘못된 경로입니다.</div>} />
+        {/* Join || Logout */}
+        <Route path="/join" element={<Join></Join>} />
+        <Route path="/login" element={<Login></Login>} />
+        <Route path="/logout" element={<Login></Login>} />
+        <Route path="*" element={<Error></Error>} />
       </Routes>
     </div>
   );
