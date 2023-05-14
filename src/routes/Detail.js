@@ -5,7 +5,8 @@ import { Nav } from "react-bootstrap";
 // import { Context1 } from "../App.js";
 import { useDispatch } from "react-redux";
 import { addShoes } from "./../store/saveCartSlice.js";
-import { changeViewdlist } from "./../store/recentlyViewedSlice.js";
+import { changeViewdList } from "./../store/recentlyViewedSlice.js";
+import RecentlyViewed from "./main/RecentlyViewed.js";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -22,6 +23,12 @@ const ShoesDetail = (props) => {
 
   let dispath = useDispatch();
   let navigate = useNavigate();
+  let params = useParams().id;
+
+  let newObject = {
+    id: props.detailShoes[params - 1].id,
+    title: props.detailShoes[params - 1].title,
+  };
   useEffect(() => {
     let set = setTimeout(() => {
       setShowAlert("none");
@@ -44,87 +51,92 @@ const ShoesDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    dispath(changeViewdlist({ data: props.detailShoes[params - 1] }));
+    props.changeRecentlyViewedList(props.detailShoes[params - 1]);
+    dispath(changeViewdList({ data: props.detailShoes[params - 1] }));
   }, []);
 
-  const params = useParams().id;
-
   return (
-    <div className={"container start " + enterDetail}>
-      <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />
-      <br />
-      <div className="alert alert-warning" style={{ display: showAlert }}>
-        2초이내 구매시 할인 !
+    <>
+      <div>
+        <RecentlyViewed className="mainChild"></RecentlyViewed>
       </div>
-      <div className="start">aaaaa</div>
-      <div className="row">
-        <div className="col-md-6">
-          <img
-            src={"https://codingapple1.github.io/shop/shoes" + params + ".jpg"}
-            width="100%"
-          />
+      <div className={"container start " + enterDetail}>
+        <br />
+        <div className="alert alert-warning" style={{ display: showAlert }}>
+          2초이내 구매시 할인 !
         </div>
-        <div className="col-md-6">
-          {/* <input
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              src={
+                "https://codingapple1.github.io/shop/shoes" + params + ".jpg"
+              }
+              width="100%"
+            />
+          </div>
+          <div className="col-md-5">
+            {/* <input
             placeholder="수량을 입력해주세요."
             value={quantity}
             onChange={(e) => {
               setQuantity(e.target.value);
             }}
           ></input> */}
-          <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
-          <p>{props.detailShoes[params - 1].content}</p>
-          <p>{props.detailShoes[params - 1].price}원</p>
-          <button
-            className="btn btn-danger"
-            onClick={() => {
-              dispath(addShoes({ data: props.detailShoes[params - 1] }));
-              navigate("/cart");
-            }}
-          >
-            주문하기
-          </button>
+            <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
+            <p>{props.detailShoes[params - 1].content}</p>
+            <p>{props.detailShoes[params - 1].price}원</p>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                dispath(addShoes({ data: props.detailShoes[params - 1] }));
+                navigate("/cart");
+              }}
+            >
+              주문하기
+            </button>
+          </div>
         </div>
-      </div>
-      <br />
-      <Nav variant="tabs" defaultActiveKey="link0">
-        <Nav.Item>
-          <Nav.Link
-            eventKey="link0"
-            onClick={() => {
-              setTabChange(0);
-            }}
-          >
-            명칭
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            eventKey="link1"
-            onClick={() => {
-              setTabChange(1);
-            }}
-          >
-            설명
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            eventKey="link2"
-            onClick={() => {
-              setTabChange(2);
-            }}
-          >
-            가격
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+        <Div bg={params === "1" ? "black" : params === "2" ? "pink" : "grey"} />
+        <br />
+        <Nav variant="tabs" defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link
+              eventKey="link0"
+              onClick={() => {
+                setTabChange(0);
+              }}
+            >
+              명칭
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="link1"
+              onClick={() => {
+                setTabChange(1);
+              }}
+            >
+              설명
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="link2"
+              onClick={() => {
+                setTabChange(2);
+              }}
+            >
+              가격
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
 
-      <TabContent
-        tabChange={tabChange}
-        detailShoes={props.detailShoes[[params - 1]]}
-      />
-    </div>
+        <TabContent
+          tabChange={tabChange}
+          detailShoes={props.detailShoes[[params - 1]]}
+        />
+      </div>
+    </>
   );
 };
 

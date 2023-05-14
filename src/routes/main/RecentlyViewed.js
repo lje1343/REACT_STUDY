@@ -7,6 +7,7 @@ const RecentlyViewed = () => {
   let store = useSelector((state) => {
     return state.recentlyViewed;
   });
+
   let navigate = useNavigate();
   let [showAccordion, setAccordion] = useState("block");
 

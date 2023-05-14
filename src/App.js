@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Container, Row, Button } from "react-bootstrap";
@@ -26,10 +26,24 @@ function App() {
   let [doneAlert, setDoneAlert] = useState("none");
   let [inventory] = useState([10, 11, 12]);
   let [show, setShow] = useState(true);
+  let [recentlyViewed, setRecentlyViewed] = useState([{}]);
 
   const changeShow = (data) => {
     setShow(data);
   };
+  const changeRecentlyViewedList = (data) => {
+    const checkExistObj = recentlyViewed.findIndex((obj) => obj.id === data.id);
+    if (checkExistObj === -1) {
+      if (recentlyViewed[0].hasOwnProperty("id")) {
+        setRecentlyViewed((recentlyViewed) => [...recentlyViewed, data]);
+      } else {
+        setRecentlyViewed((recentlyViewed = [data]));
+      }
+    }
+  };
+
+  localStorage.setItem("shoes", JSON.stringify({ data: shoes }));
+  localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
 
   return (
     <div className="App">
@@ -133,7 +147,10 @@ function App() {
           element={
             <>
               <Context1.Provider value={{ inventory, shoes }}>
-                <ShoesDetail detailShoes={shoes}></ShoesDetail>
+                <ShoesDetail
+                  detailShoes={shoes}
+                  changeRecentlyViewedList={changeRecentlyViewedList}
+                ></ShoesDetail>
               </Context1.Provider>
             </>
           }
