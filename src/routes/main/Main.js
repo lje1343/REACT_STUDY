@@ -1,7 +1,10 @@
 import { Col, Row, Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import data from "./../../data";
+import { useDispatch, useSelector } from "react-redux";
+import { updateShoesList } from "./../../store/shoesSlice";
 
 const ShoesFnc = (props) => {
   return (
@@ -23,16 +26,27 @@ const ShoesFnc = (props) => {
 };
 
 const ShoesList = (props) => {
+  let shoes = useSelector((state) => {
+    return state.shoes;
+  });
+  let dispath = useDispatch();
   let [clickCount, setClickCount] = useState(1);
   let [showBtn, setShowBtn] = useState("block");
   let [loadingAlert, setLoadingAlert] = useState("none");
   let [doneAlert, setDoneAlert] = useState("none");
 
+  useEffect(() => {
+    if (props.checkRender !== true) {
+      dispath(updateShoesList({ data: data }));
+    }
+    props.changeCheck(true);
+  }, []);
+
   return (
     <Container>
       <div>
         <Row>
-          {props.shoes.map((e, i) => {
+          {shoes.map((e, i) => {
             return <ShoesFnc shoes={e} index={i} key={i}></ShoesFnc>;
           })}
         </Row>
@@ -48,8 +62,8 @@ const ShoesList = (props) => {
                 ".json"
             )
             .then((result) => {
-              let temp = [...props.shoes, ...result.data];
-              props.addShoesList(temp);
+              let updateShoesArr = [...shoes, ...result.data];
+              dispath(updateShoesList({ data: updateShoesArr }));
 
               if (clickCount !== 2) {
                 setLoadingAlert((loadingAlert = "none"));

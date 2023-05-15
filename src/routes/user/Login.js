@@ -1,4 +1,4 @@
-import { Button, Col, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {

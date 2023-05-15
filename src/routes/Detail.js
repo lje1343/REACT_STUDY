@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
-// import { Context1 } from "../App.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addShoes } from "./../store/saveCartSlice.js";
-import { changeViewdList } from "./../store/recentlyViewedSlice.js";
+import { updateViewdList } from "./../store/recentlyViewedSlice.js";
 import RecentlyViewed from "./main/RecentlyViewed.js";
 
 let Div = styled.div`
@@ -14,21 +13,21 @@ let Div = styled.div`
   padding: 10px;
 `;
 
-const ShoesDetail = (props) => {
+const ShoesDetail = () => {
+  let recentlyViewed = useSelector((state) => {
+    return state.shoes;
+  });
   let [showAlert, setShowAlert] = useState("block");
-  let [quantity, setQuantity] = useState(0);
   let [tabChange, setTabChange] = useState(0);
   let [enterDetail, setEnterDetail] = useState("");
-  // let {inventory, shoes} = useContext(Context1)
-
   let dispath = useDispatch();
   let navigate = useNavigate();
   let params = useParams().id;
 
-  let newObject = {
-    id: props.detailShoes[params - 1].id,
-    title: props.detailShoes[params - 1].title,
-  };
+  useEffect(() => {
+    dispath(updateViewdList({ data: recentlyViewed[params - 1] }));
+  }, []);
+
   useEffect(() => {
     let set = setTimeout(() => {
       setShowAlert("none");
@@ -39,22 +38,10 @@ const ShoesDetail = (props) => {
   });
 
   useEffect(() => {
-    if (isNaN(quantity)) {
-      alert("숫자만 입력해주세요.");
-    }
-  }, [quantity]);
-
-  useEffect(() => {
     setTimeout(() => {
       setEnterDetail("end");
     }, 100);
   }, []);
-
-  useEffect(() => {
-    props.changeRecentlyViewedList(props.detailShoes[params - 1]);
-    dispath(changeViewdList({ data: props.detailShoes[params - 1] }));
-  }, []);
-
   return (
     <>
       <div>
@@ -75,20 +62,13 @@ const ShoesDetail = (props) => {
             />
           </div>
           <div className="col-md-5">
-            {/* <input
-            placeholder="수량을 입력해주세요."
-            value={quantity}
-            onChange={(e) => {
-              setQuantity(e.target.value);
-            }}
-          ></input> */}
-            <h4 className="pt-5">{props.detailShoes[params - 1].title}</h4>
-            <p>{props.detailShoes[params - 1].content}</p>
-            <p>{props.detailShoes[params - 1].price}원</p>
+            <h4 className="pt-5">{recentlyViewed[params - 1].title}</h4>
+            <p>{recentlyViewed[params - 1].content}</p>
+            <p>{recentlyViewed[params - 1].price}원</p>
             <button
               className="btn btn-danger"
               onClick={() => {
-                dispath(addShoes({ data: props.detailShoes[params - 1] }));
+                dispath(addShoes({ data: recentlyViewed[params - 1] }));
                 navigate("/cart");
               }}
             >
@@ -133,7 +113,7 @@ const ShoesDetail = (props) => {
 
         <TabContent
           tabChange={tabChange}
-          detailShoes={props.detailShoes[[params - 1]]}
+          detailShoes={recentlyViewed[[params - 1]]}
         />
       </div>
     </>
@@ -141,7 +121,6 @@ const ShoesDetail = (props) => {
 };
 
 let TabContent = ({ tabChange, detailShoes }) => {
-  // let {inventory, shoes} = useContext(Context1)
   let [fade, setFade] = useState("");
   useEffect(() => {
     setTimeout(() => {

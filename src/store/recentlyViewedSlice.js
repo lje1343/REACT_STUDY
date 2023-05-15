@@ -1,11 +1,10 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { createContext, useState } from "react";
 
 let recentlyViewed = createSlice({
   name: "recentlyViewed",
   initialState: [],
   reducers: {
-    changeViewdList(state, param) {
+    updateViewdList(state, param) {
       const checkExistObj = state.findIndex(
         (obj) => obj.id === param.payload.data.id
       );
@@ -25,5 +24,5 @@ let recentlyViewed = createSlice({
   },
 });
 
-export let { changeViewdList } = recentlyViewed.actions;
+export let { updateViewdList } = recentlyViewed.actions;
 export { recentlyViewed };

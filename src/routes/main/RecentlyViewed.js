@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 const RecentlyViewed = () => {
-  let store = useSelector((state) => {
+  let recentlyViewed = useSelector((state) => {
     return state.recentlyViewed;
   });
 
@@ -12,8 +12,8 @@ const RecentlyViewed = () => {
   let [showAccordion, setAccordion] = useState("block");
 
   useEffect(() => {
-    store.length === 0 ? setAccordion("none") : setAccordion("block");
-  }, [store]);
+    recentlyViewed.length === 0 ? setAccordion("none") : setAccordion("block");
+  }, [recentlyViewed]);
 
   return (
     <>
@@ -23,7 +23,7 @@ const RecentlyViewed = () => {
         style={{ display: showAccordion }}
       >
         <h5>💖 최근 본 상품 💖</h5>
-        {store.map((e, i) => {
+        {recentlyViewed.map((e, i) => {
           return (
             <Accordion.Item eventKey={i} key={i}>
               <Accordion.Header>{e.title}</Accordion.Header>

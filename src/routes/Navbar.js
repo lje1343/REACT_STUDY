@@ -1,8 +1,21 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Header = () => {
   let navigate = useNavigate();
+
+  let result = useQuery(
+    ["userName"],
+    async () =>
+      await axios
+        .get("https://codingapple1.github.io/userdata.json")
+        .then((result) => {
+          return result.data;
+        })
+  ); // TODO :: connect Login
 
   return (
     <Navbar bg="light" variant="light">
@@ -31,14 +44,24 @@ const Header = () => {
           >
             Event
           </Nav.Link>
-          {/* 임시 */}
-          <Nav.Link
+        </Nav>
+
+        <Nav>
+          {/* <Button
+            variant="outline-primary"
             onClick={() => {
-              navigate("/join");
+              navigate("/login");
             }}
           >
-            Join
-          </Nav.Link>
+            Login
+          </Button> */}
+        </Nav>
+        <Nav>
+          <div>
+            {result.isLoading && "loading....."}
+            {result.error && "error"}
+            안녕하세요. {result.data && result.data.name}님
+          </div>
         </Nav>
       </Container>
     </Navbar>

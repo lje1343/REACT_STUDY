@@ -2,10 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let saveCart = createSlice({
   name: "saveCart",
-  initialState: [
-    { id: 0, name: "White and Black", count: 2 },
-    { id: 2, name: "Grey Yordan", count: 1 },
-  ],
+  initialState: [],
   reducers: {
     changeQuantityShoes(state, param) {
       const idx = state.findIndex((obj) => obj.id === param.payload.data.id);

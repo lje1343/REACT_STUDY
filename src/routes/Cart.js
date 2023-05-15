@@ -10,9 +10,8 @@ const Cart = () => {
     return state;
   });
   let dispath = useDispatch();
-
   return (
-    <div>
+    <div className="mainDiv">
       <RecentlyViewed className="mainChild"></RecentlyViewed>
       <br />
       <h5>
