@@ -1,30 +1,28 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
-import { changeName, addAge } from "./../store/userSlice.js";
 import { changeQuantityShoes, deleteShoes } from "./../store/saveCartSlice.js";
 import RecentlyViewed from "./main/RecentlyViewed.js";
+import { getLocalStorage } from "./../utils/index.js";
+import { useEffect, useState } from "react";
 
 const Cart = () => {
+  let [userName, setUserName] = useState("");
   let store = useSelector((state) => {
     return state;
   });
   let dispath = useDispatch();
+
+  useEffect(() => {
+    const userData = getLocalStorage("loginUser");
+    setUserName(userData.name);
+  }, []);
+
   return (
     <div className="mainDiv">
       <RecentlyViewed className="mainChild"></RecentlyViewed>
       <br />
-      <h5>
-        {store.user.name}님의 카트입니다. ({store.user.age}세)
-      </h5>
-      {/* <Button
-        variant="outline-warning"
-        onClick={() => {
-          dispath(addAge(10));
-        }}
-      >
-        +
-      </Button> */}
+      <h5>{userName}님의 카트입니다.</h5>
       <br />
       <Table>
         <thead>
@@ -76,6 +74,14 @@ const Cart = () => {
           })}
         </tbody>
       </Table>
+      <Button
+        variant="outline-success"
+        style={{ right: "100px" }}
+        onClick={() => {}}
+        // TODO :: alert + remove cart list
+      >
+        결제하기
+      </Button>
     </div>
   );
 };

@@ -3,9 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addShoes } from "./../store/saveCartSlice.js";
-import { updateViewdList } from "./../store/recentlyViewedSlice.js";
-import RecentlyViewed from "./main/RecentlyViewed.js";
+import { addShoes } from "../../store/saveCartSlice.js";
+import { updateViewdList } from "../../store/recentlyViewedSlice.js";
+import RecentlyViewed from "./RecentlyViewed.js";
+import shoes8Img from "./../../imges/shoes8.jpg";
+import shoes9Img from "./../../imges/shoes9.jpg";
+import { getLocalStorage } from "./../../utils/index.js";
 
 let Div = styled.div`
   background: ${(props) => props.bg};
@@ -23,9 +26,29 @@ const ShoesDetail = () => {
   let dispath = useDispatch();
   let navigate = useNavigate();
   let params = useParams().id;
+  let [checkLogin, setCheckLogin] = useState(false);
+  let [userData, setUserData] = useState(false);
 
   useEffect(() => {
-    dispath(updateViewdList({ data: recentlyViewed[params - 1] }));
+    const userData = getLocalStorage("loginUser");
+    setUserData(userData);
+    if (userData === undefined) {
+      dispath(
+        updateViewdList({
+          user: "",
+          data: recentlyViewed[params - 1],
+        })
+      );
+      setCheckLogin(false);
+    } else {
+      dispath(
+        updateViewdList({
+          user: userData.id,
+          data: recentlyViewed[params - 1],
+        })
+      );
+      setCheckLogin(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -42,11 +65,25 @@ const ShoesDetail = () => {
       setEnterDetail("end");
     }, 100);
   }, []);
+
+  const goPage = () => {
+    if (checkLogin) {
+      dispath(
+        addShoes({
+          user: userData.id,
+          data: recentlyViewed[params - 1],
+        })
+      );
+      navigate("/cart");
+    } else {
+      window.alert("로그인 후 이용해 주세요.");
+      navigate("/login");
+    }
+  };
+
   return (
-    <>
-      <div>
-        <RecentlyViewed className="mainChild"></RecentlyViewed>
-      </div>
+    <div className="mainDiv">
+      <RecentlyViewed className="mainChild"></RecentlyViewed>
       <div className={"container start " + enterDetail}>
         <br />
         <div className="alert alert-warning" style={{ display: showAlert }}>
@@ -54,24 +91,28 @@ const ShoesDetail = () => {
         </div>
         <div className="row">
           <div className="col-md-6">
-            <img
-              src={
-                "https://codingapple1.github.io/shop/shoes" + params + ".jpg"
-              }
-              width="100%"
-            />
+            <>
+              {parseInt(params) === 8 ? (
+                <img src={shoes8Img} width="100%" />
+              ) : parseInt(params) === 9 ? (
+                <img src={shoes9Img} width="100%" />
+              ) : (
+                <img
+                  src={
+                    "https://codingapple1.github.io/shop/shoes" +
+                    params +
+                    ".jpg"
+                  }
+                  width="100%"
+                />
+              )}
+            </>
           </div>
           <div className="col-md-5">
             <h4 className="pt-5">{recentlyViewed[params - 1].title}</h4>
             <p>{recentlyViewed[params - 1].content}</p>
             <p>{recentlyViewed[params - 1].price}원</p>
-            <button
-              className="btn btn-danger"
-              onClick={() => {
-                dispath(addShoes({ data: recentlyViewed[params - 1] }));
-                navigate("/cart");
-              }}
-            >
+            <button className="btn btn-danger" onClick={() => goPage()}>
               주문하기
             </button>
           </div>
@@ -116,12 +157,13 @@ const ShoesDetail = () => {
           detailShoes={recentlyViewed[[params - 1]]}
         />
       </div>
-    </>
+    </div>
   );
 };
 
 let TabContent = ({ tabChange, detailShoes }) => {
   let [fade, setFade] = useState("");
+
   useEffect(() => {
     setTimeout(() => {
       setFade("end");

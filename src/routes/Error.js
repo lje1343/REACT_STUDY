@@ -1,4 +1,4 @@
-import errorImg from "../img/error.avif";
+import errorImg from "../imges/error.avif";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 

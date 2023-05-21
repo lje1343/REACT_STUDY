@@ -5,19 +5,29 @@ import { useEffect, useState } from "react";
 import data from "./../../data";
 import { useDispatch, useSelector } from "react-redux";
 import { updateShoesList } from "./../../store/shoesSlice";
+import shoes8Img from "./../../imges/shoes8.jpg";
+import shoes9Img from "./../../imges/shoes9.jpg";
 
 const ShoesFnc = (props) => {
   return (
     <Col>
       <Link to={"/detail/" + (props.index + 1)}>
-        <img
-          src={
-            "https://codingapple1.github.io/shop/shoes" +
-            (props.index + 1) +
-            ".jpg"
-          }
-          width="80%"
-        />
+        <>
+          {props.index + 1 === 8 ? (
+            <img src={shoes8Img} width="100%" />
+          ) : props.index + 1 === 9 ? (
+            <img src={shoes9Img} width="100%" />
+          ) : (
+            <img
+              src={
+                "https://codingapple1.github.io/shop/shoes" +
+                (props.index + 1) +
+                ".jpg"
+              }
+              width="100%"
+            />
+          )}
+        </>
       </Link>
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.price}</p>
@@ -40,6 +50,7 @@ const ShoesList = (props) => {
       dispath(updateShoesList({ data: data }));
     }
     props.changeCheck(true);
+    props.checkRedirectedToMain(true);
   }, []);
 
   return (

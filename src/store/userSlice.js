@@ -2,16 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let user = createSlice({
   name: "user",
-  initialState: { name: "xldmsdl", age: 23 },
+  initialState: [],
   reducers: {
-    changeName(state) {
-      state.name = "pretty xldmsdl";
+    registerUser(state, param) {
+      param.payload.data.id = param.payload.data.email;
+      state.push(param.payload.data);
+      window.alert("회원가입이 완료되었습니다.");
+      return;
     },
-    addAge(state, param) {
-      state.age += param.payload;
+    deleteUser(state, param) {
+      window.alert("탈퇴처리가 완료되었습니다.");
+      // 이것은 탈퇴임
     },
   },
 });
 
-export let { changeName, addAge } = user.actions;
+export let { registerUser, deleteUser } = user.actions;
 export { user };

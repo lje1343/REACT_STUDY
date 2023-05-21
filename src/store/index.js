@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { user } from "./userSlice.js";
 import { saveCart } from "./saveCartSlice.js";
 import { recentlyViewed } from "./recentlyViewedSlice.js";
+import { board } from "./boardSlice.js";
 import { shoes } from "./shoesSlice.js";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   saveCart: saveCart.reducer,
   recentlyViewed: recentlyViewed.reducer,
   shoes: shoes.reducer,
+  board: board.reducer,
 });
 
 const persistConfig = {

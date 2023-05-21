@@ -33,6 +33,8 @@ let saveCart = createSlice({
           count: 1,
         };
         return state.concat(addObj);
+      } else {
+        window.alert("이미 카트에 담겨 있는 상품입니다.");
       }
     },
     deleteShoes(state, param) {

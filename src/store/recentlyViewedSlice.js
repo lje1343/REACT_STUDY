@@ -17,7 +17,11 @@ let recentlyViewed = createSlice({
           tempArr = tempArr.concat(param.payload.data);
           return tempArr;
         } else {
-          return state.concat(param.payload.data);
+          const newObj = {
+            ...param.payload.data,
+            ...{ user: param.payload.user },
+          };
+          return state.concat(newObj);
         }
       }
     },

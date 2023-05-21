@@ -93,6 +93,7 @@ state1이 변경될 때만 실행
 1.
 JSON.stringify() / JSON.parse()
 new Set() / Array.from()
+base64 / decodeURIComponent
 
 2.
 ### persistStore
@@ -105,4 +106,13 @@ new Set() / Array.from()
 ### persistReducer
 	redux-persist + redux에 담긴 데이터 ===> persist 정보를 반환
 
+#######################################################################################
+05.21 ~ 
+#######################################################################################
+### ETC
+1. lazy 나중에 필요할 때 불러라
+2. memo()/useMemo() 재렌더링 하지마
+	*근데 상위 데이터 바뀌면 먹음. 그래서 다르게 예외 처리함
+3. useTransition pending시 버벅임 개선 (useState랑 유사)
+	+ useDeferredValue 변수 하나로 변경값 인식함
 

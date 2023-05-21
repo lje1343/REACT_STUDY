@@ -1,21 +1,34 @@
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+// import { useQuery } from "@tanstack/react-query";
+// import axios from "axios";
+import { getLocalStorage } from "./../utils/index.js";
 
-const Header = () => {
+const Header = (prop) => {
   let navigate = useNavigate();
+  let [checkLogin, setCheckLogin] = useState(false);
+  let [userName, setUserName] = useState("");
 
-  let result = useQuery(
-    ["userName"],
-    async () =>
-      await axios
-        .get("https://codingapple1.github.io/userdata.json")
-        .then((result) => {
-          return result.data;
-        })
-  ); // TODO :: connect Login
+  //   let result = useQuery(
+  //     ["userName"],
+  //     async () =>
+  //       await axios
+  //         .get("https://codingapple1.github.io/userdata.json")
+  //         .then((result) => {
+  //           return result.data;
+  //         })
+  //   );
+
+  useEffect(() => {
+    const userData = getLocalStorage("loginUser");
+    if (userData === undefined) {
+      setCheckLogin(false);
+    } else {
+      setUserName(userData.name);
+      setCheckLogin(true);
+    }
+  }, []);
 
   return (
     <Navbar bg="light" variant="light">
@@ -31,6 +44,7 @@ const Header = () => {
         </Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link
+            style={{ display: checkLogin === true ? "block" : "none" }}
             onClick={() => {
               navigate("/cart");
             }}
@@ -44,23 +58,26 @@ const Header = () => {
           >
             Event
           </Nav.Link>
+          <Nav.Link
+            onClick={() => {
+              navigate("/board");
+            }}
+          >
+            Board
+          </Nav.Link>
         </Nav>
 
         <Nav>
-          {/* <Button
-            variant="outline-primary"
+          <div style={{ display: checkLogin === true ? "block" : "none" }}>
+            안녕하세요. {userName}님
+          </div>
+          <div
+            style={{ display: checkLogin === false ? "block" : "none" }}
             onClick={() => {
               navigate("/login");
             }}
           >
-            Login
-          </Button> */}
-        </Nav>
-        <Nav>
-          <div>
-            {result.isLoading && "loading....."}
-            {result.error && "error"}
-            안녕하세요. {result.data && result.data.name}님
+            로그인을 해주세요.
           </div>
         </Nav>
       </Container>
